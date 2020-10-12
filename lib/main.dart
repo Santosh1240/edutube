@@ -1,104 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/home.dart';
+import 'package:flutter_app/pages/category.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter_app/pages/note.dart';
+import 'package:flutter_app/pages/library.dart';
 
-void main() {
-  runApp(Home());
-}
-class Home extends StatelessWidget {
-  static const String _title = 'Flutter Code Sample';
+void main() => runApp(MaterialApp(
+  home: MainPage(),
+));
 
+class MainPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      home: MyStatefulWidget(),
-    );
-  }
+  _MainPageState createState() => _MainPageState();
 }
 
-/// This is the stateful widget that the main application instantiates.
-class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key}) : super(key: key);
+class _MainPageState extends State<MainPage> {
+  int _pageIndex = 0;
+  GlobalKey _bottomNavigationKey = GlobalKey();
 
-  @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
-}
-
-/// This is the private State class that goes with MyStatefulWidget.
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: TextStyle(
-        color:Colors.blue,
-      ),
+  List pages = [
+    MyRoute(
+      iconData: Icons.home,
+      page: Home(),
     ),
-    Text(
-      'Index 1: Categories',
-      style: TextStyle(
-        color:Colors.blue,
-      ),
+    MyRoute(
+      iconData: Icons.category,
+      page: Category(),
     ),
-    Text(
-      'Index 2: Notes',
-      style: TextStyle(
-        color:Colors.blue,
-      ),
+    MyRoute(
+      iconData: Icons.library_books,
+      page: Note(),
     ),
-    Text(
-      'Index 3: Courses',
-      style: TextStyle(
-        color:Colors.blue,
-      ),
+    MyRoute(
+      iconData: Icons.video_library,
+      page: Library(),
     ),
   ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
+        backgroundColor: Colors.orange[800],
+        title: Text('EduTube'),
+        centerTitle: true,
       ),
-      body: Center(
-       child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home,
-              color:Colors.blue,),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category,
-              color:Colors.blue,),
-            label: 'Categories',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book,
-            color:Colors.blue),
-            label: 'Notes',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books,
-              color:Colors.blue,),
-            label: 'Courses',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[800],
-        onTap: _onItemTapped,
+      body: pages[_pageIndex].page,
+
+      bottomNavigationBar: CurvedNavigationBar(
+          key: _bottomNavigationKey,
+          color: Colors.orange[800],
+          buttonBackgroundColor: Colors.orange[800],
+          backgroundColor: Colors.white,
+          height: 65,
+          items: pages.map((p) => Icon(
+            p.iconData,
+            size: 30,
+            color: Colors.amberAccent,
+          )).toList(),
+
+          animationDuration: Duration(milliseconds: 250) ,
+          onTap: (index) {
+            setState(() {
+              _pageIndex = index;
+            });
+          }
       ),
     );
   }
+}
+
+class MyRoute {
+  final IconData iconData;
+  final Widget page;
+
+  MyRoute({this.iconData, this.page});
 }
 
 
