@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/home.dart';
-import 'package:flutter_app/pages/category.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter_app/pages/note.dart';
-import 'package:flutter_app/pages/library.dart';
+
+import 'package:flutter_app/codeEditor.dart';
+import 'package:flutter_app/library.dart';
+import 'package:flutter_app/home.dart';
+import 'package:flutter_app/note.dart';
+
 
 void main() => runApp(MaterialApp(
   home: MainPage(),
+  debugShowCheckedModeBanner: false,
 ));
 
 class MainPage extends StatefulWidget {
@@ -24,8 +27,8 @@ class _MainPageState extends State<MainPage> {
       page: Home(),
     ),
     MyRoute(
-      iconData: Icons.category,
-      page: Category(),
+      iconData: Icons.code,
+      page: CodeEditor(),
     ),
     MyRoute(
       iconData: Icons.library_books,
@@ -33,7 +36,7 @@ class _MainPageState extends State<MainPage> {
     ),
     MyRoute(
       iconData: Icons.video_library,
-      page: Library(),
+      page: VideoList(),
     ),
   ];
   @override
@@ -41,7 +44,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange[800],
-        title: Text('EduTube'),
+        title: Text('ExamPrep'),
         centerTitle: true,
       ),
       body: pages[_pageIndex].page,
@@ -75,6 +78,3 @@ class MyRoute {
 
   MyRoute({this.iconData, this.page});
 }
-
-
-
